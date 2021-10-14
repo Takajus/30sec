@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviourPunCallbacks
 {
 
     #region Variable
@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
 
     PhotonView PV;
 
+    private bool _cursorSet;
+
     [Header("Player Actions")]
 
     public float powerDistance;
@@ -44,18 +46,18 @@ public class PlayerController : MonoBehaviour
     private GameObject _powerObject;
     private RaycastHit _hit;
     private Ray _ray;
-    private Vector3 _hookImpact;
-    private Vector3 _mouvement;
-    private float _distanceHook;
 
     #endregion
 
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
+        controller = GetComponent<CharacterController>();
         _targetPower = _handPower.GetChild(0);
         _targetHook = _handHook.GetChild(0);
-
+        _cursorSet = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void Start()
@@ -71,9 +73,12 @@ public class PlayerController : MonoBehaviour
         if (!PV.IsMine)
             return;
 
-        MovementInput();
-
-        Look();
+        if (PV.IsMine)
+        {
+            MovementInput();
+            Look();
+        }
+        
 
         #region _powerObject Check
 
@@ -108,8 +113,9 @@ public class PlayerController : MonoBehaviour
                     {
                         _powerObject.AddComponent<ObjectTest01>();
                     }
-                    
+                    _powerObject.SendMessage("Floating", true);
                 }
+
             }
             Vector3 foward = _myCam.transform.TransformDirection(Vector3.forward) * 10;
             Debug.DrawRay(_myCam.transform.position, foward, Color.red, 10);
@@ -117,13 +123,14 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonUp("Fire1") && _powerObject != null)
         {
+            _powerObject.SendMessage("Floating", false);
             if (Physics.Raycast(_ray, out _hit, powerDistance))
             {
                 if (_hit.collider.gameObject != _powerObject)
                 {
-                    _powerDirection = _hit.point;
-                    _powerObject.GetComponent<ObjectTest01>().transform.localPosition = _powerDirection;
-                    //_powerObject.SendMessage("letsGo");
+                    _powerDirection = _hit.point + Vector3.up;
+                    //_powerObject.GetComponent<ObjectTest01>().transform.localPosition = _powerDirection;
+                    _powerObject.SendMessage("Launching", _powerDirection);
                     _powerObject = null;
                 }
                 if (_hit.collider.gameObject == _powerObject)
@@ -135,10 +142,12 @@ public class PlayerController : MonoBehaviour
             else
             {
                 _powerDirection = _myCam.transform.position + _myCam.transform.forward * powerDistance;
+                _powerObject.SendMessage("Launching", _powerDirection);
                 //_powerObject.GetComponent<physicObject>().target = _powerDirection;
                 //_powerObject.SendMessage("letsGo");
                 _powerObject = null;
             }
+            
         }
 
         if (Input.GetButtonDown("Fire2"))
@@ -163,10 +172,23 @@ public class PlayerController : MonoBehaviour
 
         #endregion
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        #region Cursor Settings
+
+        if (Input.GetKeyDown(KeyCode.Escape) && _cursorSet)
         {
-            GameSetup.Instance.DisconnectPlayer();
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            _cursorSet = false;
         }
+        if(Input.GetKeyDown(KeyCode.Escape) && !_cursorSet)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            _cursorSet = true;
+        }
+
+        #endregion
+
     }
 
     private void FixedUpdate()
@@ -183,12 +205,12 @@ public class PlayerController : MonoBehaviour
             _velocity.y = -2f;
         }
 
-        float moveX = Input.GetAxisRaw("Horizontal");
+        /*float moveX = Input.GetAxisRaw("Horizontal");
         float moveZ = Input.GetAxisRaw("Vertical");
 
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
 
-        controller.Move(move * speed * Time.deltaTime);
+        controller.Move(move * speed * Time.deltaTime);*/
 
         if(Input.GetButtonDown("Jump") && bGrounded)
         {
@@ -198,6 +220,23 @@ public class PlayerController : MonoBehaviour
         _velocity.y += gravity * Time.deltaTime;
 
         controller.Move(_velocity * Time.deltaTime);
+
+        if (Input.GetKey(KeyCode.Z))
+        {
+            controller.Move(transform.forward * Time.deltaTime * speed);
+        }
+        if (Input.GetKey(KeyCode.Q))
+        {
+            controller.Move(-transform.right * Time.deltaTime * speed);
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            controller.Move(-transform.forward * Time.deltaTime * speed);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            controller.Move(transform.right * Time.deltaTime * speed);
+        }
     }
 
     public void Look()
@@ -210,6 +249,9 @@ public class PlayerController : MonoBehaviour
         cameraHolder.transform.localEulerAngles = Vector3.left * _verticalLookRotation;
     }
 
-    
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 
 }
