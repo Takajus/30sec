@@ -77,6 +77,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             MovementInput();
             Look();
+
+            _ray = _myCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // position de départ du rayon
+            PV.RPC("RPC_SelectObject", RpcTarget.All);
         }
         
 
@@ -96,7 +99,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         #region Ray
 
-        _ray = _myCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // position de départ du rayon
+        /*_ray = _myCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // position de départ du rayon
         
         if(Input.GetButtonDown("Fire1"))
         {
@@ -168,7 +171,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
                     _powerObject.GetComponent<Rigidbody>().AddForce(gameObject.transform.forward * 20f);
                 }
             }
-        }
+        }*/
 
         #endregion
 
@@ -254,4 +257,81 @@ public class PlayerController : MonoBehaviourPunCallbacks
         Application.Quit();
     }
 
+    [PunRPC]
+    void RPC_SelectObject()
+    {
+        //_ray = _myCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // position de départ du rayon
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            if (Physics.Raycast(_ray, out _hit, powerDistance))
+            {
+                if (_hit.transform.tag == "ObjectTest01" && _powerObject == null)
+                {
+                    _powerObject = _hit.collider.gameObject;
+                    if (_powerObject.GetComponent<Rigidbody>() == null)
+                    {
+                        _powerObject.AddComponent<Rigidbody>();
+                    }
+                    if (_powerObject.GetComponent<ObjectTest01>() == null)
+                    {
+                        _powerObject.AddComponent<ObjectTest01>();
+                    }
+                    _powerObject.SendMessage("Floating", true);
+                }
+
+            }
+            Vector3 foward = _myCam.transform.TransformDirection(Vector3.forward) * 10;
+            Debug.DrawRay(_myCam.transform.position, foward, Color.red, 10);
+        }
+
+        if (Input.GetButtonUp("Fire1") && _powerObject != null)
+        {
+            _powerObject.SendMessage("Floating", false);
+            if (Physics.Raycast(_ray, out _hit, powerDistance))
+            {
+                if (_hit.collider.gameObject != _powerObject)
+                {
+                    _powerDirection = _hit.point + Vector3.up;
+                    //_powerObject.GetComponent<ObjectTest01>().transform.localPosition = _powerDirection;
+                    _powerObject.SendMessage("Launching", _powerDirection);
+                    _powerObject = null;
+                }
+                if (_hit.collider.gameObject == _powerObject)
+                {
+                    //_powerObject.SendMessage("annulation");
+                    _powerObject = null;
+                }
+            }
+            else
+            {
+                _powerDirection = _myCam.transform.position + _myCam.transform.forward * powerDistance;
+                _powerObject.SendMessage("Launching", _powerDirection);
+                //_powerObject.GetComponent<physicObject>().target = _powerDirection;
+                //_powerObject.SendMessage("letsGo");
+                _powerObject = null;
+            }
+
+        }
+
+        if (Input.GetButtonDown("Fire2"))
+        {
+            if (Physics.Raycast(_ray, out _hit, powerDistance))
+            {
+                if (_hit.transform.tag == "ObjectTest01" && _powerObject == null)
+                {
+                    _powerObject = _hit.collider.gameObject;
+                    if (_powerObject.GetComponent<Rigidbody>() == null)
+                    {
+                        _powerObject.AddComponent<Rigidbody>();
+                    }
+                    if (_powerObject.GetComponent<ObjectTest01>() == null)
+                    {
+                        _powerObject.AddComponent<ObjectTest01>();
+                    }
+                    _powerObject.GetComponent<Rigidbody>().AddForce(gameObject.transform.forward * 20f);
+                }
+            }
+        }
+    }
 }

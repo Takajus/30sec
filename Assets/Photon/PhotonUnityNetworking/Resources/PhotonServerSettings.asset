@@ -40,6 +40,10 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - IsFloating
+  - RPC_Launching
+  - SelectObject
+  - UnSelectObject
+  - RPC_SelectObject
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

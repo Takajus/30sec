@@ -24,11 +24,17 @@ public class ObjectTest01 : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        
-        
+        if (_isFloating)
+            PV.RPC("IsFloating", RpcTarget.All);
     }
 
     public void Launching(Vector3 _powerDirection)
+    {
+        PV.RPC("RPC_Launching", RpcTarget.All, _powerDirection);
+    }
+
+    [PunRPC]
+    void RPC_Launching(Vector3 _powerDirection)
     {
         transform.localPosition = _powerDirection;
     }
@@ -43,12 +49,12 @@ public class ObjectTest01 : MonoBehaviourPunCallbacks
     [PunRPC]
     void IsFloating()
     {
-        if (_isFloating)
-        {
+        //if (_isFloating)
+        //{
             tempPos = posOffset + Vector3.up / 2;
             tempPos.y += Mathf.Sin(Time.fixedTime * Mathf.PI * frequency) * amplitude;
 
             transform.position = tempPos;
-        }
+        //}
     }
 }
