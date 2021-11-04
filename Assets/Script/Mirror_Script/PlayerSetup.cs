@@ -1,7 +1,7 @@
 using UnityEngine;
-//using Mirror;
+using Mirror;
 
-public class PlayerSetup : MonoBehaviour //NetworkBehaviour
+public class PlayerSetup : NetworkBehaviour
 {
     [SerializeField]
     Behaviour[] componentsToDisable;
@@ -10,7 +10,7 @@ public class PlayerSetup : MonoBehaviour //NetworkBehaviour
 
     private void Start()
     {
-        /*if (!isLocalPlayer)
+        if (!isLocalPlayer)
         {
             // Si le joueur n'est pas le notre, alors désactivé tout les components renseigné
             for (int i = 0; i < componentsToDisable.Length; i++)
@@ -25,7 +25,7 @@ public class PlayerSetup : MonoBehaviour //NetworkBehaviour
             {
                 sceneCamera.gameObject.SetActive(false);
             }
-        }*/
+        }
     }
 
     private void OnDisable()

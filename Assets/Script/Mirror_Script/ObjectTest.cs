@@ -1,7 +1,7 @@
 using UnityEngine;
-//using Mirror;
+using Mirror;
 
-public class ObjectTest : MonoBehaviour //NetworkBehaviour
+public class ObjectTest : NetworkBehaviour
 {
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private bool _isFloating;

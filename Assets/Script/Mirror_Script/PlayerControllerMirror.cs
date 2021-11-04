@@ -1,9 +1,9 @@
 using UnityEngine;
-//using Mirror;
+using Mirror;
 
 [RequireComponent(typeof(PlayerMotor))] 
 // Permet de dire que le script ne peux fonctionner ce dernier et ni le supprimer
-public class PlayerControllerMirror : MonoBehaviour //NetworkBehaviour
+public class PlayerControllerMirror : NetworkBehaviour
 {
     #region Variable
 
