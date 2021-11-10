@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ObjectTest01
   - FireTest
+  - Ballista
   layers:
   - Default
   - TransparentFX

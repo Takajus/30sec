@@ -38,6 +38,7 @@ public class PlayerControllerMirror : NetworkBehaviour
 
     public GameObject fireField;
 
+    public bool bCameraRotate;
 
     private PlayerMotor motor;
 
@@ -50,6 +51,8 @@ public class PlayerControllerMirror : NetworkBehaviour
         _cursorSet = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        bCameraRotate = true;
     }
 
     private void Start()
@@ -80,7 +83,8 @@ public class PlayerControllerMirror : NetworkBehaviour
 
         Vector3 rotation = new Vector3(0, yRot, 0) * mouseSensitivityX;
 
-        motor.Rotate(rotation);
+        if(bCameraRotate)
+            motor.Rotate(rotation);
 
         #endregion
 
@@ -90,7 +94,8 @@ public class PlayerControllerMirror : NetworkBehaviour
 
         float cameraRotationX = xRot * mouseSensitivityY;
 
-        motor.RotateCamera(cameraRotationX);
+        if(bCameraRotate)
+            motor.RotateCamera(cameraRotationX);
 
         #endregion
 
@@ -246,9 +251,22 @@ public class PlayerControllerMirror : NetworkBehaviour
                 else if(_hit.transform.tag == "FireTest")
                 {
                     // Field Fire Function
-                    _powerDirection = _myCam.transform.position + _myCam.transform.forward * powerDistance;
+                    Debug.Log("firetest laser");
+                    _powerObject = _hit.collider.gameObject;
+                    if (_powerObject.GetComponent<FireField>().bFlammable)
+                    {
+                        // Enregistrer l'action pour la VFX
 
-                    Instantiate(fireField, new Vector3(_powerDirection.x, 0.05f, _powerDirection.z), Quaternion.identity);
+                        _powerObject.GetComponent<FireField>().LightningActivation();
+                    }
+
+                }
+                else if(_hit.collider.tag == "Ballista")
+                {
+                    bCameraRotate = false;
+                    Debug.Log("Arrow test");
+                    _powerObject = _hit.collider.gameObject;
+                    _powerObject.GetComponent<Ballista>().ArrowShooting();
                 }
                 
 
@@ -259,6 +277,7 @@ public class PlayerControllerMirror : NetworkBehaviour
 
         if (Input.GetButtonUp("Fire1") && _powerObject != null)
         {
+            /*
             //_powerObject.SendMessage("Floating", false);
             SendFloating(false);
             if (Physics.Raycast(_ray, out _hit, powerDistance))
@@ -285,7 +304,7 @@ public class PlayerControllerMirror : NetworkBehaviour
                 //_powerObject.GetComponent<physicObject>().target = _powerDirection;
                 //_powerObject.SendMessage("letsGo");
                 _powerObject = null;
-            }
+            }*/
 
         }
 
@@ -306,6 +325,28 @@ public class PlayerControllerMirror : NetworkBehaviour
                     }
                     _powerObject.GetComponent<Rigidbody>().AddForce(gameObject.transform.forward * 20f);
                 }
+                else if(_hit.collider.tag == "Ballista")
+                {
+                    Debug.Log("Arrow test2");
+                    _powerObject = _hit.collider.gameObject;
+                    _powerObject.GetComponent<Ballista>().bCanRotate = true;
+
+                }
+            }
+        }
+
+        if (Input.GetButtonUp("Fire2"))
+        {
+            if (Physics.Raycast(_ray, out _hit, powerDistance))
+            {
+                if (_hit.collider.tag == "Ballista")
+                {
+                    Debug.Log("Arrow test3");
+                    _powerObject.GetComponent<Ballista>().bCanRotate = false;
+
+                }
+
+
             }
         }
     }

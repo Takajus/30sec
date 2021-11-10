@@ -6,7 +6,7 @@ public class FireField : MonoBehaviour
 {
     [SerializeField] private bool bOnFire;
     [SerializeField] private bool bActivation;
-    [SerializeField] private bool bFlammable;
+    public bool bFlammable;
     private Collider[] _hit;
     [SerializeField] private LayerMask flammableObject;
     private GameObject _fieldObject;
