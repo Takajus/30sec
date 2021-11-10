@@ -81,10 +81,18 @@ public class PlayerControllerMirror : NetworkBehaviour
 
         float yRot = Input.GetAxisRaw("Mouse X");
 
-        Vector3 rotation = new Vector3(0, yRot, 0) * mouseSensitivityX;
-
-        if(bCameraRotate)
+        if (bCameraRotate)
+        {
+            Vector3 rotation = new Vector3(0, yRot, 0) * mouseSensitivityX;
             motor.Rotate(rotation);
+        }
+        else if (!bCameraRotate)
+        {
+            Vector3 rotation = new Vector3(0, 0, 0);
+            motor.Rotate(rotation);
+        }
+
+        
 
         #endregion
 
@@ -92,10 +100,16 @@ public class PlayerControllerMirror : NetworkBehaviour
 
         float xRot = Input.GetAxisRaw("Mouse Y");
 
-        float cameraRotationX = xRot * mouseSensitivityY;
-
-        if(bCameraRotate)
+        if (bCameraRotate)
+        {
+            float cameraRotationX = xRot * mouseSensitivityY;
             motor.RotateCamera(cameraRotationX);
+        }
+        else if (!bCameraRotate)
+        {
+            float cameraRotationX = 0f;
+            motor.RotateCamera(cameraRotationX);
+        }
 
         #endregion
 
@@ -263,10 +277,8 @@ public class PlayerControllerMirror : NetworkBehaviour
                 }
                 else if(_hit.collider.tag == "Ballista")
                 {
-                    bCameraRotate = false;
-                    Debug.Log("Arrow test");
-                    _powerObject = _hit.collider.gameObject;
-                    _powerObject.GetComponent<Ballista>().ArrowShooting();
+                    /*_powerObject = _hit.collider.gameObject;
+                    _powerObject.GetComponent<Ballista>().ArrowShooting();*/
                 }
                 
 
@@ -305,7 +317,7 @@ public class PlayerControllerMirror : NetworkBehaviour
                 //_powerObject.SendMessage("letsGo");
                 _powerObject = null;
             }*/
-
+            _powerObject = null;
         }
 
         if (Input.GetButtonDown("Fire2"))
@@ -330,7 +342,7 @@ public class PlayerControllerMirror : NetworkBehaviour
                     Debug.Log("Arrow test2");
                     _powerObject = _hit.collider.gameObject;
                     _powerObject.GetComponent<Ballista>().bCanRotate = true;
-
+                    bCameraRotate = false;
                 }
             }
         }
@@ -343,11 +355,13 @@ public class PlayerControllerMirror : NetworkBehaviour
                 {
                     Debug.Log("Arrow test3");
                     _powerObject.GetComponent<Ballista>().bCanRotate = false;
-
+                    bCameraRotate = true;
                 }
 
 
             }
+
+            _powerObject = null;
         }
     }
 

@@ -28,7 +28,7 @@ public class CustomArrow : MonoBehaviour
         if (_collisions >= _maxCollisions) Destroy(gameObject);
 
         _maxLifeTime -= Time.deltaTime;
-        if (_maxLifeTime <= 0) Destroy(gameObject);
+        //if (_maxLifeTime <= 0) Destroy(gameObject);
     }
 
     /*private void OnCollisionEnter(Collision collision)

@@ -31,10 +31,10 @@ public class Ballista : MonoBehaviour
         {
             TurnTheBallista();
         }
-        /*if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             ArrowShooting();
-        }*/
+        }
     }
 
     public void TurnTheBallista()
@@ -49,12 +49,11 @@ public class Ballista : MonoBehaviour
     {
         //_bReadyToShoot = true;
 
-        Vector3 shootingDirection = new Vector3(0, _turretY.transform.position.y, _turretZ.transform.position.z);
+        /*Vector3 shootingDirection = new Vector3(0, _turretY.transform.rotation.y, _turretZ.transform.rotation.z);
 
         GameObject currentArrow = Instantiate(_arrow, _firePosition.position, Quaternion.identity);
         currentArrow.transform.forward = shootingDirection.normalized;
-        currentArrow.GetComponent<Rigidbody>().AddForce(shootingDirection.normalized * _shootForce, ForceMode.Impulse);
-
+        currentArrow.GetComponent<Rigidbody>().AddForce(shootingDirection.normalized * _shootForce, ForceMode.Impulse);*/
 
     }
 }
