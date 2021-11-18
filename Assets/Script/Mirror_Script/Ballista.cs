@@ -9,6 +9,7 @@ public class Ballista : MonoBehaviour
     [SerializeField] private GameObject _turretZ;
     [SerializeField] private Transform _firePosition;
     public bool bCanRotate;
+    public GameObject physicObeject;
     //[SerializeField] private bool _bReadyToShoot;
 
     [Header("GD Var")]
@@ -31,10 +32,10 @@ public class Ballista : MonoBehaviour
         {
             TurnTheBallista();
         }
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        /*if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             ArrowShooting();
-        }
+        }*/
     }
 
     public void TurnTheBallista()
@@ -45,7 +46,7 @@ public class Ballista : MonoBehaviour
         _turretZ.transform.Rotate(new Vector3(0, 0, zRot) * mouseSensitivity);
     }
 
-    public void ArrowShooting()
+    public void activation()
     {
         //_bReadyToShoot = true;
 
@@ -54,6 +55,6 @@ public class Ballista : MonoBehaviour
         GameObject currentArrow = Instantiate(_arrow, _firePosition.position, Quaternion.identity);
         currentArrow.transform.forward = shootingDirection.normalized;
         currentArrow.GetComponent<Rigidbody>().AddForce(shootingDirection.normalized * _shootForce, ForceMode.Impulse);*/
-
+        physicObeject.GetComponent<PhysicObject>().letsGo();
     }
 }
