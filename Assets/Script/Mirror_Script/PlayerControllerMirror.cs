@@ -271,14 +271,18 @@ public class PlayerControllerMirror : NetworkBehaviour
                     {
                         // Enregistrer l'action pour la VFX
 
-                        _powerObject.GetComponent<FireField>().LightningActivation();
+                        //_powerObject.GetComponent<FireField>().LightningActivation();
+                        //PrepPhaseSystem.instance.LightningActivationFireField(_powerObject);
+                        PrepPhaseSystem.instance.AddEvent(_powerObject);
                     }
 
                 }
                 else if(_hit.collider.tag == "Ballista")
                 {
-                    /*_powerObject = _hit.collider.gameObject;
-                    _powerObject.GetComponent<Ballista>().ArrowShooting();*/
+                    _powerObject = _hit.collider.gameObject;
+                    //_powerObject.GetComponent<Ballista>().ArrowShooting();
+                    //PrepPhaseSystem.instance.letsGoPhysicObject(_powerObject);
+                    PrepPhaseSystem.instance.AddEvent(_powerObject);
                 }
                 
 
@@ -342,7 +346,7 @@ public class PlayerControllerMirror : NetworkBehaviour
                     Debug.Log("Arrow test2");
                     _powerObject = _hit.collider.gameObject;
                     _powerObject.GetComponent<Ballista>().bCanRotate = true;
-                    bCameraRotate = false;
+                    //bCameraRotate = false;
                 }
             }
         }
@@ -355,7 +359,7 @@ public class PlayerControllerMirror : NetworkBehaviour
                 {
                     Debug.Log("Arrow test3");
                     _powerObject.GetComponent<Ballista>().bCanRotate = false;
-                    bCameraRotate = true;
+                    //bCameraRotate = true;
                 }
 
 

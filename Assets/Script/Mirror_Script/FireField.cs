@@ -29,7 +29,7 @@ public class FireField : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R) && test)
         {
-            LightningActivation();
+            activation();
         }
 
         if (bOnFire)
@@ -56,7 +56,7 @@ public class FireField : MonoBehaviour
 
                 if (_fieldObject.GetComponent<FireField>()._fireChance > rand)
                 {
-                    _fieldObject.GetComponent<FireField>().LightningActivation();
+                    _fieldObject.GetComponent<FireField>().activation();
                 }
                 else if (_fieldObject.GetComponent<FireField>()._fireChance < rand)
                 {
@@ -75,7 +75,7 @@ public class FireField : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, radius);
     }
 
-    public void LightningActivation()
+    public void activation()
     {
         if (!bActivation)
         {

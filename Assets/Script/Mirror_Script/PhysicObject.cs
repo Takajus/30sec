@@ -5,6 +5,7 @@ public class PhysicObject : MonoBehaviour
     private float speed = 5f;
     private Rigidbody rb;
     public Transform target;
+    public LayerMask layerBallista;
     private Vector3 mouvement;
     private float dist;
     private float startDist;
@@ -56,14 +57,14 @@ public class PhysicObject : MonoBehaviour
 
     void OnCollisionEnter(Collision quiMeTouche)
     {
-        if (fire)
+        if (fire && quiMeTouche.gameObject.layer != layerBallista)
         {
             //AkSoundEngine.PostEvent("Play_collision_rockvsrock", gameObject);
             annulation();
         }
     }
 
-    void letsGo()
+    public void letsGo()
     {
         startDist = Vector3.Distance(transform.position, target.position);
         if (startDist > 25f)
