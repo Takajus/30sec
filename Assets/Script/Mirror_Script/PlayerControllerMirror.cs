@@ -262,7 +262,7 @@ public class PlayerControllerMirror : NetworkBehaviour
                     //_powerObject.SendMessage("Floating", true);
                     SendFloating(true);
                 }
-                else if(_hit.transform.tag == "FireTest")
+                else if(_hit.transform.tag == "FireTest" && PrepPhaseSystem.instance.bPPSOn == true)
                 {
                     // Field Fire Function
                     Debug.Log("firetest laser");
@@ -277,7 +277,7 @@ public class PlayerControllerMirror : NetworkBehaviour
                     }
 
                 }
-                else if(_hit.collider.tag == "Ballista")
+                else if(_hit.collider.tag == "Ballista" && PrepPhaseSystem.instance.bPPSOn == true)
                 {
                     _powerObject = _hit.collider.gameObject;
                     //_powerObject.GetComponent<Ballista>().ArrowShooting();
