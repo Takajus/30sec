@@ -9,6 +9,7 @@ public class PrepPhaseSystem : MonoBehaviour
     [SerializeField] private float _PrepTimer = 20f;
     [SerializeField] private float _RepTimer = 5f;
     [SerializeField] private List<GameObject> _gameObjectTmp;
+    public bool bPPSOn;
     //[SerializeField] private bool _bPrepPhaseEnd;
 
     private void Awake()
@@ -22,6 +23,7 @@ public class PrepPhaseSystem : MonoBehaviour
     private void Start()
     {
         //_bPrepPhaseEnd = false;
+        bPPSOn = false;
     }
 
     private void Update()
@@ -59,7 +61,11 @@ public class PrepPhaseSystem : MonoBehaviour
 
     public IEnumerator DelaySystem()
     {
+        bPPSOn = true;
+
         yield return new WaitForSeconds(_PrepTimer);
+
+        bPPSOn = false;
 
         for (int i = 0; i < _gameObjectTmp.Count; i++)
         {
