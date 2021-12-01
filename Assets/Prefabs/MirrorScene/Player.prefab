@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7564274821649902660}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HandHook
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +70,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4043206260351266327}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HandPower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3936601746348560606}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7869035551187445414}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,7 +161,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7231271069593287862}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,7 +194,7 @@ GameObject:
   - component: {fileID: 7231271070024468901}
   - component: {fileID: 7231271070024468903}
   - component: {fileID: 7231271070024468902}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 7231271070453496892}
   - component: {fileID: 7231271070453496895}
   - component: {fileID: 7231271070453496894}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RightArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -354,7 +354,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7231271070659965157}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -388,7 +388,7 @@ GameObject:
   - component: {fileID: 7231271070668211237}
   - component: {fileID: 7231271070668211236}
   - component: {fileID: 7231271070668211235}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -593,9 +593,9 @@ GameObject:
   - component: {fileID: 8145882585167544463}
   - component: {fileID: -5520362604306589074}
   - component: {fileID: 8585364130540936572}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -691,6 +691,7 @@ MonoBehaviour:
   _handHook: {fileID: 7564274821649902660}
   _myCam: {fileID: 7231271070668211237}
   fireField: {fileID: 6634515918667963453, guid: 366c99f4c552a8d41a8e76560d563a46, type: 3}
+  bCameraRotate: 0
 --- !u!114 &3039465770686741547
 MonoBehaviour:
   m_ObjectHideFlags: 0
