@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class FireField : MonoBehaviour
 {
@@ -22,13 +23,17 @@ public class FireField : MonoBehaviour
     private EnemyAI AiScript;
     private FieldMecanic fieldParentScript;
 
+    public VisualEffect flamme;
+
     // Start is called before the first frame update
     void Start()
     {
+        flamme = transform.GetChild(0).GetComponent<VisualEffect>();
         fieldParentScript = transform.parent.GetComponent<FieldMecanic>();
         bOnFire = false;
         bActivation = false;
         bFlammable = true;
+        flamme.SetFloat("SpawnRate", 0);
     }
 
     // Update is called once per frame
@@ -94,6 +99,8 @@ public class FireField : MonoBehaviour
                 bOnFire = true;
 
                 // Fire VFX Activation
+                flamme.SetFloat("SpawnRate", 20);
+
                 gameObject.GetComponent<MeshRenderer>().material = _material;
 
                 StartCoroutine(EndFire());
@@ -105,6 +112,7 @@ public class FireField : MonoBehaviour
     {
         yield return new WaitForSeconds(Random.Range(10, 15));
 
+        flamme.SetFloat("SpawnRate", 0);
         bActivation = false;
         fieldParentScript.check = false;
         gameObject.GetComponent<MeshRenderer>().material = _material1;
