@@ -7,6 +7,9 @@ TagManager:
   - ObjectTest01
   - FireTest
   - Ballista
+  - AI
+  - VIP
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -17,7 +20,7 @@ TagManager:
   - Ground
   - Player
   - Obstacle
-  - 
+  - AI
   - 
   - 
   - 

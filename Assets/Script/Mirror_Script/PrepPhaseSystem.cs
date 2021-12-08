@@ -9,6 +9,7 @@ public class PrepPhaseSystem : MonoBehaviour
     [SerializeField] private float _PrepTimer = 20f;
     [SerializeField] private float _RepTimer = 5f;
     [SerializeField] private List<GameObject> _gameObjectTmp;
+    [SerializeField] private List<int> _intTmp;
     public bool bPPSOn;
     //[SerializeField] private bool _bPrepPhaseEnd;
 
@@ -69,7 +70,7 @@ public class PrepPhaseSystem : MonoBehaviour
 
         for (int i = 0; i < _gameObjectTmp.Count; i++)
         {
-            _gameObjectTmp[i].SendMessage("activation");
+            _gameObjectTmp[i].SendMessage("activation", _intTmp[i]);
             yield return new WaitForSeconds(_RepTimer);
         }
     }
@@ -94,9 +95,17 @@ public class PrepPhaseSystem : MonoBehaviour
 
     #endregion
 
-    public void AddEvent(GameObject eventGm)
+    public void AddEvent(GameObject eventGm, int p)
     {
+        for (int i = 0; i < _gameObjectTmp.Count; i++)
+        {
+            if(eventGm == _gameObjectTmp[i] && p == _intTmp[i])
+            {
+                return;
+            }
+        }
         _gameObjectTmp.Add(eventGm);
+        _intTmp.Add(p);
         Debug.Log("One Event GameObject is Ready");
     }
 }

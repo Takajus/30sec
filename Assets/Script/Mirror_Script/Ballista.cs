@@ -10,7 +10,8 @@ public class Ballista : MonoBehaviour
     [SerializeField] private Transform _firePosition;
     public bool bCanRotate;
     public GameObject physicObeject;
-    //[SerializeField] private bool _bReadyToShoot;
+    public bool p0;
+    public bool p1;
 
     [Header("GD Var")]
     [SerializeField] private float mouseSensitivity = 1f;
@@ -23,6 +24,8 @@ public class Ballista : MonoBehaviour
     {
         //_bReadyToShoot = false;
         bCanRotate = false;
+        p1 = true;
+        p0 = true;
     }
 
     // Update is called once per frame
@@ -46,7 +49,7 @@ public class Ballista : MonoBehaviour
         _turretZ.transform.Rotate(new Vector3(0, 0, zRot) * mouseSensitivity);
     }
 
-    public void activation()
+    public void activation(int p = 0)
     {
         //_bReadyToShoot = true;
 
@@ -55,6 +58,15 @@ public class Ballista : MonoBehaviour
         GameObject currentArrow = Instantiate(_arrow, _firePosition.position, Quaternion.identity);
         currentArrow.transform.forward = shootingDirection.normalized;
         currentArrow.GetComponent<Rigidbody>().AddForce(shootingDirection.normalized * _shootForce, ForceMode.Impulse);*/
-        physicObeject.GetComponent<PhysicObject>().letsGo();
+        if (p == 0 && !p0)
+        {
+            p0 = true;
+            physicObeject.GetComponent<PhysicObject>().letsGo();
+        }
+        if(p == 1 && !p1)
+        {
+            p1 = true;
+            Debug.LogWarning("Ballista Wind");
+        }
     }
 }

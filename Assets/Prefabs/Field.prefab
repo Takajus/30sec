@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6634515918667963448}
   - component: {fileID: 6634515918667963455}
   - component: {fileID: 5303019304591434435}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Field
   m_TagString: FireTest
   m_Icon: {fileID: 0}
@@ -111,9 +111,13 @@ MonoBehaviour:
   bOnFire: 0
   bActivation: 0
   bFlammable: 0
-  flammableObject:
+  _radiusDetection: 15
+  _flammableObject:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2147483648
+  _AIObject:
+    serializedVersion: 2
+    m_Bits: 512
   radius: 3
   _fireChance: 0
   test: 0

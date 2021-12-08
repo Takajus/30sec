@@ -4,21 +4,28 @@ using UnityEngine;
 
 public class FireField : MonoBehaviour
 {
-    [SerializeField] private bool bOnFire;
+    public bool bOnFire;
     [SerializeField] private bool bActivation;
     public bool bFlammable;
     private Collider[] _hit;
-    [SerializeField] private LayerMask flammableObject;
+    private Collider[] _AI;
+    [SerializeField] private float _radiusDetection;
+    [SerializeField] private LayerMask _flammableObject, _AIObject;
     private GameObject _fieldObject;
+    private GameObject _AIlistObject;
     [SerializeField] private float radius = 3.0f;
     [SerializeField] private float _fireChance;
 
     public bool test;
     public Material _material, _material1;
 
+    private EnemyAI AiScript;
+    private FieldMecanic fieldParentScript;
+
     // Start is called before the first frame update
     void Start()
     {
+        fieldParentScript = transform.parent.GetComponent<FieldMecanic>();
         bOnFire = false;
         bActivation = false;
         bFlammable = true;
@@ -32,11 +39,12 @@ public class FireField : MonoBehaviour
             activation();
         }
 
-        if (bOnFire)
+        if (bOnFire && bActivation)
         {
             bOnFire = false;
 
             StartCoroutine(SetOnFire());
+            fieldParentScript.AIAreaCall();
         }
     }
 
@@ -44,7 +52,7 @@ public class FireField : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
 
-        _hit = Physics.OverlapSphere(transform.position, radius, flammableObject);
+        _hit = Physics.OverlapSphere(transform.position, radius, _flammableObject);
 
         foreach (Collider fireField in _hit)
         {
@@ -75,18 +83,21 @@ public class FireField : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, radius);
     }
 
-    public void activation()
+    public void activation(int p = 0)
     {
-        if (!bActivation)
+        if (p == 0)
         {
-            bFlammable = false;
-            bActivation = true;
-            bOnFire = true;
+            if (!bActivation)
+            {
+                bFlammable = false;
+                bActivation = true;
+                bOnFire = true;
 
-            // Fire VFX Activation
-            gameObject.GetComponent<MeshRenderer>().material = _material;
+                // Fire VFX Activation
+                gameObject.GetComponent<MeshRenderer>().material = _material;
 
-            StartCoroutine(EndFire());
+                StartCoroutine(EndFire());
+            }
         }
     }
 
@@ -94,6 +105,30 @@ public class FireField : MonoBehaviour
     {
         yield return new WaitForSeconds(Random.Range(10, 15));
 
+        bActivation = false;
+        fieldParentScript.check = false;
         gameObject.GetComponent<MeshRenderer>().material = _material1;
     }
+
+    /*public IEnumerator AIAreaCheck()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        _AI = Physics.OverlapSphere(transform.position, _radiusDetection, _AIObject);
+
+        foreach(Collider AIobject in _AI)
+        {
+            _AIlistObject = AIobject.gameObject;
+
+            if(AIobject.tag == "AI")
+            {
+                print("ttttt");
+                AiScript = _AIlistObject.GetComponent<EnemyAI>();
+                AiScript._otherPath.position = transform.position;
+                AiScript.bot.ResetPath();
+                AiScript.ChangePath(10);
+            }
+        }
+    }*/
+
 }

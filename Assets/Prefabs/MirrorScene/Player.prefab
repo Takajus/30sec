@@ -685,7 +685,7 @@ MonoBehaviour:
   groundDistance: 0.4
   groundMask:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 64
   powerDistance: 20
   _handPower: {fileID: 4043206260351266327}
   _handHook: {fileID: 7564274821649902660}

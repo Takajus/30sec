@@ -10,7 +10,7 @@ public class PlayerControllerMirror : NetworkBehaviour
     [SerializeField] private float speed = 3f;
     [SerializeField] private float mouseSensitivityX = 3f;
     [SerializeField] private float mouseSensitivityY = 3f;
-    private bool _cursorSet;
+    [SerializeField] private bool _cursorSet;
 
     [Header("Player Jump")]
 
@@ -273,16 +273,23 @@ public class PlayerControllerMirror : NetworkBehaviour
 
                         //_powerObject.GetComponent<FireField>().LightningActivation();
                         //PrepPhaseSystem.instance.LightningActivationFireField(_powerObject);
-                        PrepPhaseSystem.instance.AddEvent(_powerObject);
+                        PrepPhaseSystem.instance.AddEvent(_powerObject, 0);
                     }
 
                 }
                 else if(_hit.collider.tag == "Ballista" && PrepPhaseSystem.instance.bPPSOn == true)
                 {
+                    Debug.Log("Arrow Light");
                     _powerObject = _hit.collider.gameObject;
+                    PrepPhaseSystem.instance.AddEvent(_powerObject, 0);
                     //_powerObject.GetComponent<Ballista>().ArrowShooting();
                     //PrepPhaseSystem.instance.letsGoPhysicObject(_powerObject);
-                    PrepPhaseSystem.instance.AddEvent(_powerObject);
+                    
+                }
+                else if(_hit.collider.tag == "Item" && PrepPhaseSystem.instance.bPPSOn == true)
+                {
+                    _powerObject = _hit.collider.gameObject;
+                    PrepPhaseSystem.instance.AddEvent(_powerObject, 0);
                 }
                 
 
@@ -341,31 +348,22 @@ public class PlayerControllerMirror : NetworkBehaviour
                     }
                     _powerObject.GetComponent<Rigidbody>().AddForce(gameObject.transform.forward * 20f);
                 }
-                else if(_hit.collider.tag == "Ballista")
+                else if(_hit.collider.tag == "Ballista" && PrepPhaseSystem.instance.bPPSOn == true)
                 {
-                    Debug.Log("Arrow test2");
+                    Debug.Log("Arrow Wind");
                     _powerObject = _hit.collider.gameObject;
-                    _powerObject.GetComponent<Ballista>().bCanRotate = true;
+                    PrepPhaseSystem.instance.AddEvent(_powerObject, 1);
+                    /*_powerObject = _hit.collider.gameObject;
+                    _powerObject.GetComponent<Ballista>().bCanRotate = true;*/
                     //bCameraRotate = false;
                 }
-            }
-        }
-
-        if (Input.GetButtonUp("Fire2"))
-        {
-            if (Physics.Raycast(_ray, out _hit, powerDistance))
-            {
-                if (_hit.collider.tag == "Ballista")
+                else if(_hit.collider.tag == "Item" && PrepPhaseSystem.instance.bPPSOn == true)
                 {
-                    Debug.Log("Arrow test3");
-                    _powerObject.GetComponent<Ballista>().bCanRotate = false;
-                    //bCameraRotate = true;
+                    Debug.Log("Lamp Wind");
+                    _powerObject = _hit.collider.gameObject;
+                    PrepPhaseSystem.instance.AddEvent(_powerObject, 1);
                 }
-
-
             }
-
-            _powerObject = null;
         }
     }
 

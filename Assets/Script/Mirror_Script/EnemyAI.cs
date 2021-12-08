@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyAI : MonoBehaviour
 {
 
-    private NavMeshAgent bot;
+    public NavMeshAgent bot;
 
     [Header("Animation")]
     [SerializeField] private Animator _anim;
@@ -21,17 +21,23 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float _defaultSpeed;
 
     [Header("Trigger System")]
-    private Collider[] _triggerArea;
+    public Collider[] _triggerArea;
     private bool _bGoBack;
-    [SerializeField] private bool _bIsTrigger;
-    [SerializeField] private bool _bFOVCheck;
+    public bool _bIsTrigger;
     [SerializeField] private float _waitingTime;
     [SerializeField] private float _radius;
+    private bool _oneTime;
+    public bool fireCheck;
     [Range(0, 360)]
     [SerializeField] private float _angle;
-    [SerializeField] private Transform _otherPath;
+    public Transform _otherPath;
     [SerializeField] private LayerMask _targetMask;
     [SerializeField] private LayerMask _obstructionMask;
+    [SerializeField] private bool _bOldPPSOn;
+
+    [Header("Detection")]
+    [SerializeField] private float timeStart;
+    private float timer;
      
 
     void Start()
@@ -49,12 +55,16 @@ public class EnemyAI : MonoBehaviour
         _defaultSpeed = bot.speed;
         nextDestination();
 
-        _bFOVCheck = true;
-        StartCoroutine(FOVRoutine());
+        timer = timeStart;
+        _oneTime = true;
     }
 
     void Update()
     {
+        if(_bOldPPSOn != PrepPhaseSystem.instance.bPPSOn && _bOldPPSOn)
+        {
+            nextDestination();
+        }
 
         #region Test Section
 
@@ -79,16 +89,26 @@ public class EnemyAI : MonoBehaviour
         }
         else if(PrepPhaseSystem.instance.bPPSOn == false)
         {
-            bot.speed = _defaultSpeed;
-            _anim.speed = bot.velocity.magnitude * animspeed;
-            _anim.SetFloat("velocity", bot.velocity.magnitude * animspeed);
+            //bot.speed = _defaultSpeed;
+            /*_anim.speed = bot.velocity.magnitude * animspeed;
+            _anim.SetFloat("velocity", bot.velocity.magnitude * animspeed);*/
+
+            if(bot.velocity.magnitude > 0.2 && !_bIsTrigger)
+            {
+                _anim.speed = bot.velocity.magnitude * animspeed;
+                _anim.SetFloat("velocity", bot.velocity.magnitude * animspeed);
+            }
+            if(bot.velocity.magnitude < 0.2 && !_bIsTrigger)
+            {
+                _anim.speed = 1;
+            }
         }
 
         #endregion
 
         #region Patrol System
 
-        if (!_bIsTrigger)
+        if (!_bIsTrigger && !PrepPhaseSystem.instance.bPPSOn)
         {
             #region Original
 
@@ -160,7 +180,7 @@ public class EnemyAI : MonoBehaviour
                 }
             }
         }
-        else if (_bIsTrigger)
+        else if (_bIsTrigger && !PrepPhaseSystem.instance.bPPSOn)
         {
             /*if (Vector3.Distance(transform.position, _otherPath.position) < 0.2f)
             {
@@ -168,20 +188,65 @@ public class EnemyAI : MonoBehaviour
                 StartCoroutine(GoBackToPatrol());
             }*/
 
-            if(Vector3.Distance(transform.position, _otherPath.position) < 1f && _bIsTrigger)
+            if(/*Vector3.Distance(transform.position, _otherPath.position) < 5f*/ bot.remainingDistance < 5f)
             {
-                bot.isStopped = true;
+                bot.speed = 0;
+                _anim.SetFloat("velocity", 0f);
+                //print("speed 0");
             }
-            else if (Vector3.Distance(transform.position, _otherPath.position) > 1f && _bIsTrigger)
+            else if (Vector3.Distance(transform.position, _otherPath.position) > 5f)
             {
-                bot.isStopped = false;
+                bot.speed = _defaultSpeed;
+                _anim.SetFloat("velocity", bot.velocity.magnitude * animspeed);
             }
 
         }
 
         #endregion
 
+        #region Detection
 
+        if (_bIsTrigger && _otherPath.tag == "Player")
+        {
+            timer -= Time.deltaTime;
+            if (timer <= 0)
+            {
+                timer = 0;
+                // ----------------------------------GameOver-------------------------------------
+                print("GameOver");
+            }
+        }
+        else if(!_bIsTrigger)
+        {
+            timer = timeStart;
+        }
+
+        #endregion
+
+        //Debug.Log(Vector3.Distance(transform.position, _otherPath.position));
+        //Debug.Log(bot.velocity.magnitude);
+
+        _bOldPPSOn = PrepPhaseSystem.instance.bPPSOn;
+
+        if (_oneTime && !fireCheck)
+        {
+            _oneTime = false;
+            StartCoroutine(FOVRoutine());
+        }
+        if (fireCheck)
+        {
+            if (/*Vector3.Distance(transform.position, _otherPath.position) < 5f*/ bot.remainingDistance < 15f)
+            {
+                bot.speed = 0;
+                _anim.SetFloat("velocity", 0f);
+                //print("speed 0");
+            }
+            else if (Vector3.Distance(transform.position, _otherPath.position) > 15f)
+            {
+                bot.speed = _defaultSpeed;
+                _anim.SetFloat("velocity", bot.velocity.magnitude * animspeed);
+            }
+        }
 
     }
 
@@ -189,15 +254,17 @@ public class EnemyAI : MonoBehaviour
     {
         // WaitForSecond + _anim.SetFloat("velocity", 0);
 
+        bot.speed = _defaultSpeed;
         bot.SetDestination(_destination[_nextPoint]);
     }
 
-    private void ChangePath(/*Vector3 otherPath*/)
+    public void ChangePath(/*Vector3 otherPath*/ float waitTime = 0)
     {
         
         _bIsTrigger = true;
         //_otherPath = otherPath;
         bot.SetDestination(_otherPath.position);
+        _waitingTime = waitTime;
     }
 
     private IEnumerator GoBackToPatrol()
@@ -208,13 +275,9 @@ public class EnemyAI : MonoBehaviour
 
     private IEnumerator FOVRoutine()
     {
-        WaitForSeconds wait = new WaitForSeconds(0.2f);
-
-        while (true)
-        {
-            yield return wait;
-            FOVCheck();
-        }
+        yield return new WaitForSeconds(0.2f);
+        FOVCheck();
+        _oneTime = true;
     }
 
     private void FOVCheck()
@@ -224,6 +287,15 @@ public class EnemyAI : MonoBehaviour
         if(_triggerArea.Length != 0)
         {
             _otherPath = _triggerArea[0].transform;
+
+            /*if(_otherPath.tag == "FireTest" && _otherPath.GetComponent<FireField>().bOnFire == true && _oneTime == 0)
+            {
+                print("test");
+                _oneTime++;
+                bot.ResetPath();
+                ChangePath(10);
+            }*/
+
             Vector3 directionToTarget = (_otherPath.position - transform.position).normalized;
 
             if(Vector3.Angle(transform.forward, directionToTarget) < _angle / 2)
@@ -235,7 +307,7 @@ public class EnemyAI : MonoBehaviour
                     //_bIsTrigger = true;
 
                     bot.ResetPath();
-                    ChangePath();
+                    ChangePath(5);
                 }
                 else
                 {
