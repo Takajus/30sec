@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMotor : MonoBehaviour
 {
-    [SerializeField] private Camera cam;
+    [SerializeField] private GameObject cam;
 
     private Vector3 velocity;
     private Vector3 rotation;
@@ -54,12 +54,14 @@ public class PlayerMotor : MonoBehaviour
     {
         if(velocity != Vector3.zero)
         {
-            rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
+            rb.velocity = new Vector3(velocity.x, rb.velocity.y, velocity.z);
         }
 
         if(thrusterVelocity != Vector3.zero)
         {
-            rb.AddForce(thrusterVelocity * Time.fixedDeltaTime, ForceMode.Impulse);
+            //rb.AddForce(thrusterVelocity * Time.fixedDeltaTime, ForceMode.Impulse);
+            rb.velocity = new Vector3(rb.velocity.x, thrusterVelocity.y, rb.velocity.z);
+            thrusterVelocity = Vector3.zero;
         }
     }
 

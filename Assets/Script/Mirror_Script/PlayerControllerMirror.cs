@@ -8,6 +8,8 @@ public class PlayerControllerMirror : NetworkBehaviour
     #region Variable
 
     [SerializeField] private float speed = 3f;
+    [SerializeField] private float crouchSpeed = 1.5f;
+    private float currentSpeed;
     [SerializeField] private float mouseSensitivityX = 3f;
     [SerializeField] private float mouseSensitivityY = 3f;
     [SerializeField] private bool _cursorSet;
@@ -41,6 +43,10 @@ public class PlayerControllerMirror : NetworkBehaviour
     public bool bCameraRotate;
 
     private PlayerMotor motor;
+    [SerializeField] private Animator _anim;
+    private Rigidbody rb;
+    private bool _bIsCrouch;
+    private CapsuleCollider col;
 
     #endregion
 
@@ -51,18 +57,20 @@ public class PlayerControllerMirror : NetworkBehaviour
         _cursorSet = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
+        currentSpeed = speed;
         bCameraRotate = true;
     }
 
     private void Start()
     {
         motor = GetComponent<PlayerMotor>();
+        rb = GetComponent<Rigidbody>();
+        col = GetComponent<CapsuleCollider>();
+
     }
 
     private void Update()
     {
-
         #region Movement
 
         float xMov = Input.GetAxisRaw("Horizontal"); // A = -1, D = 1
@@ -71,9 +79,18 @@ public class PlayerControllerMirror : NetworkBehaviour
         Vector3 moveHorizontal = transform.right * xMov;
         Vector3 moveVertical = transform.forward * zMov;
 
-        Vector3 velocity = (moveHorizontal + moveVertical).normalized * speed;
+        Vector3 velocity = (moveHorizontal + moveVertical).normalized * currentSpeed;
 
         motor.Move(velocity);
+
+        _anim.SetFloat("velocity", rb.velocity.magnitude);
+
+        #endregion
+
+        #region Animation
+
+        _anim.SetFloat("velocityZ", zMov);
+        _anim.SetFloat("velocityX", xMov);
 
         #endregion
 
@@ -117,14 +134,48 @@ public class PlayerControllerMirror : NetworkBehaviour
 
         bGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
+        _anim.SetBool("bGrounded", bGrounded);
+
         //Calcul de la force du saut/ jetpack
-        Vector3 thrusterVelocity = Vector3.zero;
         if (Input.GetButton("Jump") && bGrounded)
         {
-            thrusterVelocity = Vector3.up * thrusterForce;
+            motor.ApplyThruster(Vector3.up * thrusterForce);
+            if (_bIsCrouch)
+            {
+                _bIsCrouch = false;
+                col.height = 1.8f;
+                col.center = new Vector3(0, 0.9f, 0);
+                currentSpeed = speed;
+
+            }
         }
         // Appliquer la force
-        motor.ApplyThruster(thrusterVelocity);
+        
+
+        #endregion
+
+        #region Crouch
+
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            if (_bIsCrouch)
+            {
+                _bIsCrouch = false;
+                col.height = 1.8f;
+                col.center = new Vector3(0, 0.9f, 0);
+                currentSpeed = speed;
+                _anim.SetTrigger("CrouchEnd");
+
+            }
+            else if (!_bIsCrouch)
+            {
+                _bIsCrouch = true;
+                col.height = 0.9f;
+                col.center = new Vector3(0, 0.45f, 0);
+                currentSpeed = crouchSpeed;
+                _anim.SetTrigger("CrouchStart");
+            }
+        }
 
         #endregion
 
@@ -230,7 +281,7 @@ public class PlayerControllerMirror : NetworkBehaviour
             Cursor.visible = false;
             _cursorSet = false;
         }
-        if (Input.GetKeyDown(KeyCode.Escape) && !_cursorSet)
+        else if (Input.GetKeyDown(KeyCode.Escape) && !_cursorSet)
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
