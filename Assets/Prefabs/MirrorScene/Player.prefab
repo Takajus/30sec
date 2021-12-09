@@ -680,13 +680,14 @@ MonoBehaviour:
   speed: 10
   mouseSensitivityX: 3
   mouseSensitivityY: 3
+  _cursorSet: 0
   thrusterForce: 500
   groundCheck: {fileID: 3598980364643091969}
   groundDistance: 0.4
   groundMask:
     serializedVersion: 2
     m_Bits: 64
-  powerDistance: 20
+  powerDistance: 50
   _handPower: {fileID: 4043206260351266327}
   _handHook: {fileID: 7564274821649902660}
   _myCam: {fileID: 7231271070668211237}
