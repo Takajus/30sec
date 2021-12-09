@@ -378,7 +378,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2123720455974304269}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.42, y: 2.87, z: -1.42}
+  m_LocalPosition: {x: 0.42, y: 2.87, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2123720456118467149}
@@ -573,7 +573,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2123720456118467146}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.38, y: -0.54, z: 0}
+  m_LocalPosition: {x: 0, y: -0.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2123720455787068866}
@@ -705,17 +705,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44e1379bf037cc14ba41b4cc1ad76144, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _turretY: {fileID: 2123720455098675275}
-  _turretZ: {fileID: 2123720456895818050}
   _firePosition: {fileID: 2123720455974304268}
-  bCanRotate: 0
+  _fireDirection: {fileID: 2123720455647712897}
   physicObeject: {fileID: 2123720456118467146}
+  GFX: {fileID: 2123720456353986110}
   p0: 0
   p1: 0
-  mouseSensitivity: 1
-  _arrow: {fileID: 3609497092407166283, guid: d1f50c718a6fa3045ae97eccbce819ca, type: 3}
-  _shootForce: 300
-  _upwardForce: 0
+  turnSpeed: 300
 --- !u!1 &2123720456895818050
 GameObject:
   m_ObjectHideFlags: 0
