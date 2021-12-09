@@ -53,7 +53,8 @@ public class EnemyAI : MonoBehaviour
         }
 
         _defaultSpeed = bot.speed;
-        nextDestination();
+        //nextDestination();
+        StartCoroutine(GoBackToPatrol());
 
         timer = timeStart;
         _oneTime = true;
@@ -146,7 +147,8 @@ public class EnemyAI : MonoBehaviour
                 else if (_nextPoint >= monPath.transform.childCount)
                 {
                     _nextPoint = 0;
-                    nextDestination();
+                    StartCoroutine(GoBackToPatrol());
+                    //nextDestination();
                 }
             }
             else if (Vector3.Distance(transform.position, _destination[_nextPoint]) < 0.2f && !loop)
@@ -173,7 +175,8 @@ public class EnemyAI : MonoBehaviour
                     }
                     else if (_nextPoint <= 0)
                     {
-                        nextDestination();
+                        //nextDestination();
+                        StartCoroutine(GoBackToPatrol());
                         _nextPoint = 0;
                         _bGoBack = false;
                     }
@@ -272,6 +275,7 @@ public class EnemyAI : MonoBehaviour
         yield return new WaitForSeconds(_waitingTime);
         nextDestination();
     }
+
 
     private IEnumerator FOVRoutine()
     {
