@@ -28,6 +28,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float _radius;
     private bool _oneTime;
     public bool fireCheck;
+    public float fireDistance;
     [Range(0, 360)]
     [SerializeField] private float _angle;
     public Transform _otherPath;
@@ -238,13 +239,13 @@ public class EnemyAI : MonoBehaviour
         }
         if (fireCheck)
         {
-            if (/*Vector3.Distance(transform.position, _otherPath.position) < 5f*/ bot.remainingDistance < 15f)
+            if (/*Vector3.Distance(transform.position, _otherPath.position) < 5f*/ bot.remainingDistance < fireDistance)
             {
                 bot.speed = 0;
                 _anim.SetFloat("velocity", 0f);
                 //print("speed 0");
             }
-            else if (Vector3.Distance(transform.position, _otherPath.position) > 15f)
+            else if (Vector3.Distance(transform.position, _otherPath.position) > fireDistance)
             {
                 bot.speed = _defaultSpeed;
                 _anim.SetFloat("velocity", bot.velocity.magnitude * animspeed);
