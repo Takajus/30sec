@@ -298,6 +298,11 @@ public class EnemyAI : MonoBehaviour
                 bot.speed = _defaultSpeed;
                 _anim.SetFloat("velocity", bot.velocity.magnitude * animspeed);
             }
+            else if(bot.remainingDistance < (Vector3.Distance(transform.position, _otherPath.position)))
+            {
+                bot.speed = 0;
+                _anim.SetFloat("velocity", 0f);
+            }
         }
 
     }

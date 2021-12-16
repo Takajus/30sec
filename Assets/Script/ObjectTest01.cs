@@ -1,11 +1,11 @@
-using Photon.Pun;
+//using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectTest01 : MonoBehaviourPunCallbacks
+public class ObjectTest01 : MonoBehaviour //MonoBehaviourPunCallbacks
 {
-    private PhotonView PV;
+    /*private PhotonView PV;
 
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private bool _isFloating;
@@ -56,5 +56,5 @@ public class ObjectTest01 : MonoBehaviourPunCallbacks
 
             transform.position = tempPos;
         //}
-    }
+    }*/
 }

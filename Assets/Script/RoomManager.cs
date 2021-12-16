@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
+//using Photon.Pun;
 using UnityEngine.SceneManagement;
 using System.IO;
-using Photon.Realtime;
+//using Photon.Realtime;
 
-public class RoomManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
+public class RoomManager : MonoBehaviour //MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
-    public static RoomManager Instance { get; private set; }
+    /*public static RoomManager Instance { get; private set; }
     private PhotonView PV;
 
     private GameObject gopv;
@@ -78,6 +78,6 @@ public class RoomManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         gopv = new GameObject("gopv");
         gopv.AddComponent<PhotonView>();
         gopv.transform.parent = transform;
-    }
+    }*/
 
 }

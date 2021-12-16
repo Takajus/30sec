@@ -1,4 +1,4 @@
-using Photon.Pun;
+//using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameSetup : MonoBehaviour
 {
-    public static GameSetup Instance;
+    /*public static GameSetup Instance;
 
     private void OnEnable()
     {
@@ -29,5 +29,5 @@ public class GameSetup : MonoBehaviour
         while (PhotonNetwork.InRoom)
             yield return null;
         SceneManager.LoadScene(0);
-    }
+    }*/
 }

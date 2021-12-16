@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Photon.Pun;
-using Photon.Realtime;
+//using Photon.Pun;
+//using Photon.Realtime;
 
-public class Launcher : MonoBehaviourPunCallbacks
+public class Launcher : MonoBehaviour //MonoBehaviourPunCallbacks
 {
-    public static Launcher Instance;
+    /*public static Launcher Instance;
 
     [SerializeField] InputField roomNameInputField;
     [SerializeField] Text errorText;
@@ -112,5 +112,5 @@ public class Launcher : MonoBehaviourPunCallbacks
             }
             Instantiate(rooomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(roomList[i]);
         }
-    }
+    }*/
 }

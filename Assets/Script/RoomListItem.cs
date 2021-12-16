@@ -1,4 +1,4 @@
-using Photon.Realtime;
+//using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class RoomListItem : MonoBehaviour
 {
-    [SerializeField] Text text;
+    /*[SerializeField] Text text;
 
     public RoomInfo info;
 
@@ -19,5 +19,5 @@ public class RoomListItem : MonoBehaviour
     public void OnClick()
     {
         Launcher.Instance.JoinRoom(info);
-    }
+    }*/
 }

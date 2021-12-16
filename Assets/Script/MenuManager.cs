@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
-    public static MenuManager Instance;
+    /*public static MenuManager Instance;
 
     [SerializeField] Menu[] menus;
 
@@ -43,5 +43,5 @@ public class MenuManager : MonoBehaviour
     public void CloseMenu(Menu menu)
     {
         menu.Close();
-    }
+    }*/
 }

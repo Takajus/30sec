@@ -1,13 +1,13 @@
-using Photon.Pun;
+//using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerController : MonoBehaviourPunCallbacks
+public class PlayerController : MonoBehaviour //MonoBehaviourPunCallbacks
 {
 
-    #region Variable
+    /*#region Variable
 
     [Header("Player Movements")]
 
@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         #region Ray
 
-        /*_ray = _myCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // position de départ du rayon
+        *//*_ray = _myCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // position de départ du rayon
         
         if(Input.GetButtonDown("Fire1"))
         {
@@ -171,7 +171,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
                     _powerObject.GetComponent<Rigidbody>().AddForce(gameObject.transform.forward * 20f);
                 }
             }
-        }*/
+        }*//*
 
         #endregion
 
@@ -208,12 +208,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
             _velocity.y = -2f;
         }
 
-        /*float moveX = Input.GetAxisRaw("Horizontal");
+        *//*float moveX = Input.GetAxisRaw("Horizontal");
         float moveZ = Input.GetAxisRaw("Vertical");
 
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
 
-        controller.Move(move * speed * Time.deltaTime);*/
+        controller.Move(move * speed * Time.deltaTime);*//*
 
         if(Input.GetButtonDown("Jump") && bGrounded)
         {
@@ -333,5 +333,5 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 }
             }
         }
-    }
+    }*/
 }
