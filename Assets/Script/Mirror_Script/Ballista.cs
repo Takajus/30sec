@@ -65,6 +65,7 @@ public class Ballista : MonoBehaviour
 
     public IEnumerator SmockDelay()
     {
+        print("con de tes mort");
         _tree.GetComponent<Animator>().SetTrigger("Treeger");
         yield return new WaitForSeconds(_smockDelayTime);
         _smock.SetActive(true);
