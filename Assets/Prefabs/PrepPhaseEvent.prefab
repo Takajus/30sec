@@ -47,4 +47,6 @@ MonoBehaviour:
   _RepTimer: 2
   _gameObjectTmp: []
   _intTmp: 
+  _lightning_1: {fileID: 5698492487606051406, guid: 211819398eade254c95c49300f86762b, type: 3}
+  _lightning_2: {fileID: 690965604948256151, guid: 6e96820454865ea49b7fbbc2f7e225e9, type: 3}
   bPPSOn: 0

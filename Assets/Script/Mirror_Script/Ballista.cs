@@ -65,7 +65,7 @@ public class Ballista : MonoBehaviour
 
     public IEnumerator SmockDelay()
     {
-        _tree.GetComponent<Animator>().enabled = true;
+        _tree.GetComponent<Animator>().SetTrigger("Treeger");
         yield return new WaitForSeconds(_smockDelayTime);
         _smock.SetActive(true);
     }

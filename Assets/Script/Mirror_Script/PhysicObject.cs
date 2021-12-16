@@ -63,10 +63,14 @@ public class PhysicObject : MonoBehaviour
     {
         if (fire && quiMeTouche.gameObject.layer != layerBallista)
         {
+            if(_balistaScript._smock != null && _balistaScript._tree != null)
+            {
+                StartCoroutine(_balistaScript.SmockDelay());
+            }
+                
             //AkSoundEngine.PostEvent("Play_collision_rockvsrock", gameObject);
             annulation();
-            if(_balistaScript._smock != null && _balistaScript._tree != null)
-                StartCoroutine(_balistaScript.SmockDelay());
+            
         }
     }
 
