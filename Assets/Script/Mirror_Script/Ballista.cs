@@ -11,6 +11,8 @@ public class Ballista : MonoBehaviour
     public bool p1;
 
     [Header("GD Var")]
+    public GameObject _smock, _tree;
+    [SerializeField] private float _smockDelayTime;
     [SerializeField] private float turnSpeed;
     
 
@@ -59,5 +61,12 @@ public class Ballista : MonoBehaviour
             TurnTheBallista();
             Debug.LogWarning("Ballista Wind");
         }
+    }
+
+    public IEnumerator SmockDelay()
+    {
+        _tree.GetComponent<Animator>().enabled = true;
+        yield return new WaitForSeconds(_smockDelayTime);
+        _smock.SetActive(true);
     }
 }

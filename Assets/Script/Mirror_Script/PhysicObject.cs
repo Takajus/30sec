@@ -11,8 +11,8 @@ public class PhysicObject : MonoBehaviour
     private float dist;
     private float startDist;
     private bool fire = false;
-    [SerializeField] private GameObject _smock, _tree;
-    [SerializeField] private float _smockDelayTime;
+    [SerializeField] private GameObject _balista;
+    private Ballista _balistaScript;
 
     void Awake()
     {
@@ -24,7 +24,8 @@ public class PhysicObject : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
         rb.isKinematic = true;
-
+        if (_balista != null)
+            _balistaScript = _balista.GetComponent<Ballista>();
     }
 
     private void Update()
@@ -64,8 +65,8 @@ public class PhysicObject : MonoBehaviour
         {
             //AkSoundEngine.PostEvent("Play_collision_rockvsrock", gameObject);
             annulation();
-            if(_smock != null && _tree != null)
-                StartCoroutine(SmockDelay());
+            if(_balistaScript._smock != null && _balistaScript._tree != null)
+                StartCoroutine(_balistaScript.SmockDelay());
         }
     }
 
@@ -85,12 +86,5 @@ public class PhysicObject : MonoBehaviour
         fire = false;
         rb.useGravity = true;
         Destroy(GetComponent<PhysicObject>());
-    }
-
-    private IEnumerator SmockDelay()
-    {
-        _tree.GetComponent<Animator>().enabled = true;
-        yield return new WaitForSeconds(_smockDelayTime);
-        _smock.SetActive(true);
     }
 }
