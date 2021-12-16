@@ -57,5 +57,6 @@ public class DeathAnim : MonoBehaviour
         anim.SetBool("dead", true);
         anim.SetInteger("deathPosition", deathPosition);
         col.enabled = false;
+        PrepPhaseSystem.instance.nbDeath++;
     }
 }

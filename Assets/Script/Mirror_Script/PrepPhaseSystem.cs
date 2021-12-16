@@ -15,6 +15,8 @@ public class PrepPhaseSystem : MonoBehaviour
     [SerializeField] private GameObject _lightning_1, _lightning_2, _wind;
     public bool bPPSOn;
     //[SerializeField] private bool _bPrepPhaseEnd;
+    public int nbDeath;
+    public GameObject victoryPanel;
 
     private void Awake()
     {
@@ -28,6 +30,8 @@ public class PrepPhaseSystem : MonoBehaviour
     {
         //_bPrepPhaseEnd = false;
         bPPSOn = false;
+        victoryPanel.SetActive(false);
+        nbDeath = 0;
     }
 
     private void Update()
@@ -35,6 +39,11 @@ public class PrepPhaseSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             StartCoroutine(DelaySystem());
+        }
+
+        if(nbDeath == 3)
+        {
+            victoryPanel.SetActive(true);
         }
 
         #region tu sais bien

@@ -42,6 +42,7 @@ public class EnemyAI : MonoBehaviour
     [Header("Detection")]
     [SerializeField] private float timeStart;
     private float timer;
+    public GameObject gameoverPanel;
      
 
     void Start()
@@ -63,6 +64,7 @@ public class EnemyAI : MonoBehaviour
 
         timer = timeStart;
         _oneTime = true;
+        gameoverPanel.SetActive(false);
     }
 
     void Update()
@@ -267,6 +269,7 @@ public class EnemyAI : MonoBehaviour
                 timer = 0;
                 // ----------------------------------GameOver-------------------------------------
                 print("GameOver");
+                gameoverPanel.SetActive(true);
             }
         }
         else if(!_bIsTrigger)
