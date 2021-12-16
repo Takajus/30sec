@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PhysicObject : MonoBehaviour
@@ -10,6 +11,8 @@ public class PhysicObject : MonoBehaviour
     private float dist;
     private float startDist;
     private bool fire = false;
+    [SerializeField] private GameObject _smock, _tree;
+    [SerializeField] private float _smockDelayTime;
 
     void Awake()
     {
@@ -61,6 +64,8 @@ public class PhysicObject : MonoBehaviour
         {
             //AkSoundEngine.PostEvent("Play_collision_rockvsrock", gameObject);
             annulation();
+            if(_smock != null && _tree != null)
+                StartCoroutine(SmockDelay());
         }
     }
 
@@ -80,5 +85,12 @@ public class PhysicObject : MonoBehaviour
         fire = false;
         rb.useGravity = true;
         Destroy(GetComponent<PhysicObject>());
+    }
+
+    private IEnumerator SmockDelay()
+    {
+        _tree.GetComponent<Animator>().enabled = true;
+        yield return new WaitForSeconds(_smockDelayTime);
+        _smock.SetActive(true);
     }
 }
