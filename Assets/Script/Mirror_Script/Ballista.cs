@@ -35,7 +35,7 @@ public class Ballista : MonoBehaviour
         Vector3 dir = _fireDirection.position - transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(dir);
         Vector3 rotation = Quaternion.Lerp(GFX.transform.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
-        GFX.transform.rotation = Quaternion.Euler(0f, rotation.y + 90f, 0f);
+        GFX.transform.rotation = Quaternion.Euler(-90f, rotation.y + 90f, 90f);
         _firePosition.rotation = Quaternion.Euler(0f, rotation.y, 0f);
     }
 
