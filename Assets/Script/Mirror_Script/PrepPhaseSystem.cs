@@ -12,7 +12,7 @@ public class PrepPhaseSystem : MonoBehaviour
     [SerializeField] private float _RepTimer = 5f;
     [SerializeField] private List<GameObject> _gameObjectTmp;
     [SerializeField] private List<int> _intTmp;
-    [SerializeField] private GameObject _lightning_1, _lightning_2;
+    [SerializeField] private GameObject _lightning_1, _lightning_2, _wind;
     public bool bPPSOn;
     //[SerializeField] private bool _bPrepPhaseEnd;
 
@@ -125,7 +125,7 @@ public class PrepPhaseSystem : MonoBehaviour
         }
         else if(_intTmp[i] == 1)
         {
-            return;
+            Instantiate(_wind, _gameObjectTmp[i].transform.position, Quaternion.identity);
         }
     }
 }
