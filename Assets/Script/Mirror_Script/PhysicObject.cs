@@ -87,6 +87,6 @@ public class PhysicObject : MonoBehaviour
     {
         fire = false;
         rb.useGravity = true;
-        Destroy(GetComponent<PhysicObject>());
+        //Destroy(GetComponent<PhysicObject>());
     }
 }

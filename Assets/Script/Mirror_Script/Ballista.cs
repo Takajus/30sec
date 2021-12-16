@@ -12,6 +12,7 @@ public class Ballista : MonoBehaviour
 
     [Header("GD Var")]
     public GameObject _smock, _tree;
+    public Transform smockPos;
     [SerializeField] private float _smockDelayTime;
     [SerializeField] private float turnSpeed;
     
@@ -68,6 +69,6 @@ public class Ballista : MonoBehaviour
         print("con de tes mort");
         _tree.GetComponent<Animator>().SetTrigger("Treeger");
         yield return new WaitForSeconds(_smockDelayTime);
-        _smock.SetActive(true);
+        Instantiate(_smock, smockPos.position, Quaternion.identity);
     }
 }

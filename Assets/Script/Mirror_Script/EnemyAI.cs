@@ -33,6 +33,7 @@ public class EnemyAI : MonoBehaviour
     [Range(0, 360)]
     [SerializeField] private float _angle;
     public Transform _otherPath;
+    private Transform _otherPathTmp;
     [SerializeField] private LayerMask _targetMask;
     [SerializeField] private LayerMask _obstructionMask;
     [SerializeField] private bool _bOldPPSOn;
@@ -66,7 +67,7 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        if (_bOldPPSOn != PrepPhaseSystem.instance.bPPSOn && _bOldPPSOn)
+        if (_bOldPPSOn != PrepPhaseSystem.instance.bPPSOn && _bOldPPSOn && monPath != null)
         {
             nextDestination();
         }
@@ -312,7 +313,8 @@ public class EnemyAI : MonoBehaviour
         // WaitForSecond + _anim.SetFloat("velocity", 0);
 
         bot.speed = _defaultSpeed;
-        bot.SetDestination(_destination[_nextPoint]);
+        if(_destination.Length >= 2) 
+            bot.SetDestination(_destination[_nextPoint]);
     }
 
     public void ChangePath(/*Vector3 otherPath*/ float waitTime = 0)
@@ -342,9 +344,9 @@ public class EnemyAI : MonoBehaviour
     {
         _triggerArea = Physics.OverlapSphere(transform.position, _radius, _targetMask);
 
-        if(_triggerArea.Length != 0)
+        if(_triggerArea.Length != 0  && !_bIsVip)
         {
-            _otherPath = _triggerArea[0].transform;
+            _otherPathTmp = _triggerArea[0].transform;
 
             /*if(_otherPath.tag == "FireTest" && _otherPath.GetComponent<FireField>().bOnFire == true && _oneTime == 0)
             {
@@ -354,16 +356,16 @@ public class EnemyAI : MonoBehaviour
                 ChangePath(10);
             }*/
 
-            Vector3 directionToTarget = (_otherPath.position - transform.position).normalized;
+            Vector3 directionToTarget = (_otherPathTmp.position - transform.position).normalized;
 
             if(Vector3.Angle(transform.forward, directionToTarget) < _angle / 2)
             {
-                float distanceToTarget = Vector3.Distance(transform.position, _otherPath.position);
+                float distanceToTarget = Vector3.Distance(transform.position, _otherPathTmp.position);
 
                 if(!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, _obstructionMask))
                 {
                     //_bIsTrigger = true;
-
+                    _otherPath = _otherPathTmp;
                     bot.ResetPath();
                     ChangePath(5);
                 }

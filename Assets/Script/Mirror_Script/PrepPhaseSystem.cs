@@ -117,7 +117,6 @@ public class PrepPhaseSystem : MonoBehaviour
     {
         if(_intTmp[i] == 0)
         {
-            print("con de tes mort");
             int rand = Random.Range(1, 2);
             if(rand == 1)
                 Instantiate(_lightning_1, _gameObjectTmp[i].transform.position, Quaternion.identity);
