@@ -9,20 +9,20 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Ch45_Body
   m_Shader: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
-  m_ShaderKeywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _EMISSIVE_COLOR_MAP
-    _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
-  m_LightmapFlags: 1
+  m_ShaderKeywords: _DOUBLESIDED_ON _EMISSIVE_COLOR_MAP _ENABLE_FOG_ON_TRANSPARENT
+    _ENABLE_GEOMETRIC_SPECULAR_AA _MATERIAL_FEATURE_CLEAR_COAT _MATERIAL_FEATURE_TRANSMISSION
+    _NORMALMAP _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT _TRANSPARENT_WRITES_MOTION_VEC
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
-  m_CustomRenderQueue: 2225
-  stringTagMap: {}
+  m_CustomRenderQueue: 3001
+  stringTagMap:
+    RenderType: Transparent
   disabledShaderPasses:
   - DistortionVectors
   - MOTIONVECTORS
-  - TransparentDepthPrepass
-  - TransparentDepthPostpass
-  - TransparentBackface
   - RayTracingPrepass
+  - TransparentDepthPostpass
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -75,7 +75,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
-        m_Texture: {fileID: 2800000, guid: b3d88da38ec9264418badc8a27558eee, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
@@ -132,22 +132,22 @@ Material:
     - _ATDistance: 1
     - _AddPrecomputedVelocity: 0
     - _AlbedoAffectEmissive: 0
-    - _AlphaCutoff: 0.5
+    - _AlphaCutoff: 1
     - _AlphaCutoffEnable: 0
     - _AlphaCutoffPostpass: 0.5
-    - _AlphaCutoffPrepass: 0.5
-    - _AlphaCutoffShadow: 0.5
-    - _AlphaDstBlend: 0
+    - _AlphaCutoffPrepass: 1
+    - _AlphaCutoffShadow: 1
+    - _AlphaDstBlend: 1
     - _AlphaSrcBlend: 1
     - _AlphaToMask: 0
-    - _AlphaToMaskInspectorValue: 0
+    - _AlphaToMaskInspectorValue: 1
     - _Anisotropy: 0
-    - _BlendMode: 0
+    - _BlendMode: 1
     - _BumpScale: 1
-    - _CoatMask: 0
+    - _CoatMask: 1
     - _CullMode: 0
-    - _CullModeForward: 0
-    - _Cutoff: 0.5
+    - _CullModeForward: 2
+    - _Cutoff: 1
     - _DepthOffsetEnable: 0
     - _DetailAlbedoScale: 1
     - _DetailNormalMapScale: 1
@@ -175,14 +175,14 @@ Material:
     - _DistortionVectorScale: 2
     - _DoubleSidedEnable: 1
     - _DoubleSidedNormalMode: 1
-    - _DstBlend: 0
+    - _DstBlend: 1
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
     - _EmissiveIntensity: 1
     - _EmissiveIntensityUnit: 0
     - _EnableBlendModePreserveSpecularLighting: 1
     - _EnableFogOnTransparent: 1
-    - _EnableGeometricSpecularAA: 0
+    - _EnableGeometricSpecularAA: 1
     - _EnergyConservingSpecularColor: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
@@ -202,13 +202,13 @@ Material:
     - _IridescenceMask: 1
     - _IridescenceThickness: 1
     - _LinkDetailsWithBase: 1
-    - _MaterialID: 1
-    - _Metallic: 0.5
+    - _MaterialID: 5
+    - _Metallic: 0
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
     - _Mode: 0
     - _NormalMapSpace: 0
-    - _NormalScale: 1
+    - _NormalScale: 8
     - _OcclusionStrength: 1
     - _OpaqueCullMode: 1
     - _PPDLodThreshold: 5
@@ -219,14 +219,14 @@ Material:
     - _Parallax: 0.02
     - _RayTracing: 0
     - _ReceivesSSR: 1
-    - _ReceivesSSRTransparent: 0
+    - _ReceivesSSRTransparent: 1
     - _RefractionModel: 0
-    - _Smoothness: 0.5
+    - _Smoothness: 1
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
     - _SmoothnessTextureChannel: 0
-    - _SpecularAAScreenSpaceVariance: 0.1
-    - _SpecularAAThreshold: 0.2
+    - _SpecularAAScreenSpaceVariance: 1
+    - _SpecularAAThreshold: 1
     - _SpecularHighlights: 1
     - _SpecularOcclusionMode: 1
     - _SrcBlend: 1
@@ -242,25 +242,25 @@ Material:
     - _StencilWriteMaskMV: 40
     - _SubsurfaceMask: 1
     - _SupportDecals: 1
-    - _SurfaceType: 0
+    - _SurfaceType: 1
     - _TexWorldScale: 1
     - _TexWorldScaleEmissive: 1
     - _Thickness: 1
     - _TransmissionEnable: 1
-    - _TransparentBackfaceEnable: 0
+    - _TransparentBackfaceEnable: 1
     - _TransparentCullMode: 2
     - _TransparentDepthPostpassEnable: 0
-    - _TransparentDepthPrepassEnable: 0
-    - _TransparentSortPriority: 0
-    - _TransparentWritingMotionVec: 0
-    - _TransparentZWrite: 0
+    - _TransparentDepthPrepassEnable: 1
+    - _TransparentSortPriority: 1
+    - _TransparentWritingMotionVec: 1
+    - _TransparentZWrite: 1
     - _UVBase: 0
     - _UVDetail: 0
     - _UVEmissive: 0
     - _UVSec: 0
     - _UseEmissiveIntensity: 0
     - _UseShadowThreshold: 0
-    - _ZTestDepthEqualForOpaque: 3
+    - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 4
     - _ZTestModeDistortion: 4
     - _ZTestTransparent: 4
@@ -272,7 +272,7 @@ Material:
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissiveColor: {r: 0, g: 47.184315, b: 256, a: 1}
+    - _EmissiveColor: {r: 0, g: 24.094118, b: 191.74902, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
