@@ -36,6 +36,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private LayerMask _targetMask;
     [SerializeField] private LayerMask _obstructionMask;
     [SerializeField] private bool _bOldPPSOn;
+    public bool _bIsVip;
 
     [Header("Detection")]
     [SerializeField] private float timeStart;
@@ -55,7 +56,8 @@ public class EnemyAI : MonoBehaviour
         }
 
         _defaultSpeed = bot.speed;
-        nextDestination();
+        if(!_bIsVip)
+            nextDestination();
         //StartCoroutine(GoBackToPatrol());
 
         timer = timeStart;
@@ -64,7 +66,7 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        if(_bOldPPSOn != PrepPhaseSystem.instance.bPPSOn && _bOldPPSOn)
+        if (_bOldPPSOn != PrepPhaseSystem.instance.bPPSOn && _bOldPPSOn)
         {
             nextDestination();
         }
@@ -90,18 +92,18 @@ public class EnemyAI : MonoBehaviour
             bot.speed = 0;
             _anim.speed = 0;
         }
-        else if(PrepPhaseSystem.instance.bPPSOn == false)
+        else if (PrepPhaseSystem.instance.bPPSOn == false)
         {
             //bot.speed = _defaultSpeed;
             /*_anim.speed = bot.velocity.magnitude * animspeed;
             _anim.SetFloat("velocity", bot.velocity.magnitude * animspeed);*/
 
-            if(bot.velocity.magnitude > 0.2 && !_bIsTrigger)
+            if (bot.velocity.magnitude > 0.2 && !_bIsTrigger)
             {
                 _anim.speed = bot.velocity.magnitude * animspeed;
                 _anim.SetFloat("velocity", bot.velocity.magnitude * animspeed);
             }
-            if(bot.velocity.magnitude < 0.2 && !_bIsTrigger)
+            if (bot.velocity.magnitude < 0.2 && !_bIsTrigger)
             {
                 _anim.speed = 1;
             }
@@ -111,118 +113,145 @@ public class EnemyAI : MonoBehaviour
 
         #region Patrol System
 
-        if (!_bIsTrigger && !PrepPhaseSystem.instance.bPPSOn)
+        if (!_bIsVip)
         {
-            #region Original
-
-            /*if (Vector3.Distance(transform.position, new Vector3(destination[nextPoint].x, transform.position.y, destination[nextPoint].z)) < 0.2f)
+            if (!_bIsTrigger && !PrepPhaseSystem.instance.bPPSOn)
             {
-                nextPoint++;
+                #region Original
 
-                if (!loop && nextPoint < monPath.transform.childCount)
+                /*if (Vector3.Distance(transform.position, new Vector3(destination[nextPoint].x, transform.position.y, destination[nextPoint].z)) < 0.2f)
                 {
-                    nextDestination();
-                }
-                if (loop && nextPoint < monPath.transform.childCount)
-                {
-                    nextDestination();
-                }
+                    nextPoint++;
 
-                else if (loop && nextPoint >= monPath.transform.childCount)
-                {
-                    nextPoint = 0;
-                    nextDestination();
-                }
+                    if (!loop && nextPoint < monPath.transform.childCount)
+                    {
+                        nextDestination();
+                    }
+                    if (loop && nextPoint < monPath.transform.childCount)
+                    {
+                        nextDestination();
+                    }
+
+                    else if (loop && nextPoint >= monPath.transform.childCount)
+                    {
+                        nextPoint = 0;
+                        nextDestination();
+                    }
                 
-            }*/
+                }*/
 
-            #endregion
+                #endregion
 
-            if (Vector3.Distance(transform.position, _destination[_nextPoint]) < 0.2f && loop)
-            {
-                _nextPoint++;
-
-                if (_nextPoint < monPath.transform.childCount)
+                if (Vector3.Distance(transform.position, _destination[_nextPoint]) < 0.2f && loop)
                 {
-                    nextDestination();
+                    _nextPoint++;
+
+                    if (_nextPoint < monPath.transform.childCount)
+                    {
+                        nextDestination();
+                    }
+                    else if (_nextPoint >= monPath.transform.childCount)
+                    {
+                        _nextPoint = 0;
+                        StartCoroutine(GoBackToPatrol(_waitingTimeEndPatrol));
+                        //nextDestination();
+                    }
                 }
-                else if (_nextPoint >= monPath.transform.childCount)
+                else if (Vector3.Distance(transform.position, _destination[_nextPoint]) < 0.2f && !loop)
                 {
-                    _nextPoint = 0;
-                    StartCoroutine(GoBackToPatrol(_waitingTimeEndPatrol));
-                    //nextDestination();
+                    if (!_bGoBack)
+                    {
+                        //_nextPoint++;
+                        if (_nextPoint == 0)
+                        {
+                            _nextPoint++;
+                            StartCoroutine(GoBackToPatrol(_waitingTimeEndPatrol));
+                        }
+                        else if (_nextPoint != 0)
+                        {
+                            _nextPoint++;
+                            if (_nextPoint < monPath.transform.childCount)
+                            {
+                                //_nextPoint++;
+                                nextDestination();
+                            }
+                            else if (_nextPoint >= monPath.transform.childCount)
+                            {
+                                _nextPoint = monPath.transform.childCount - 1;
+                                _bGoBack = true;
+                            }
+                        }
+                    }
+                    else if (_bGoBack)
+                    {
+                        if (_nextPoint == monPath.transform.childCount - 1)
+                        {
+                            _nextPoint--;
+                            StartCoroutine(GoBackToPatrol(_waitingTimeEndPatrol));
+                        }
+                        else if (_nextPoint != monPath.transform.childCount - 1)
+                        {
+                            _nextPoint--;
+                            if (_nextPoint > 0)
+                            {
+                                nextDestination();
+                            }
+                            else if (_nextPoint <= 0)
+                            {
+                                nextDestination();
+                                //StartCoroutine(GoBackToPatrol());
+                                _nextPoint = 0;
+                                _bGoBack = false;
+                            }
+                        }
+                    }
                 }
             }
-            else if (Vector3.Distance(transform.position, _destination[_nextPoint]) < 0.2f && !loop)
+            else if (_bIsTrigger && !PrepPhaseSystem.instance.bPPSOn)
             {
-                if (!_bGoBack)
+                /*if (Vector3.Distance(transform.position, _otherPath.position) < 0.2f)
                 {
-                    //_nextPoint++;
-                    if(_nextPoint == 0)
-                    {
-                        _nextPoint++;
-                        StartCoroutine(GoBackToPatrol(_waitingTimeEndPatrol));
-                    }
-                    else if (_nextPoint != 0)
-                    {
-                        _nextPoint++;
-                        if (_nextPoint < monPath.transform.childCount)
-                        {
-                            //_nextPoint++;
-                            nextDestination();
-                        }
-                        else if (_nextPoint >= monPath.transform.childCount)
-                        {
-                            _nextPoint = monPath.transform.childCount - 1;
-                            _bGoBack = true;
-                        }
-                    }
-                }
-                else if (_bGoBack)
+                    _bIsTrigger = false;
+                    StartCoroutine(GoBackToPatrol());
+                }*/
+
+                if (/*Vector3.Distance(transform.position, _otherPath.position) < 5f*/ bot.remainingDistance < 5f)
                 {
-                    if (_nextPoint == monPath.transform.childCount - 1)
-                    {
-                        _nextPoint--;
-                        StartCoroutine(GoBackToPatrol(_waitingTimeEndPatrol));
-                    }
-                    else if (_nextPoint != monPath.transform.childCount - 1)
-                    {
-                        _nextPoint--;
-                        if (_nextPoint > 0)
-                        {
-                            nextDestination();
-                        }
-                        else if (_nextPoint <= 0)
-                        {
-                            nextDestination();
-                            //StartCoroutine(GoBackToPatrol());
-                            _nextPoint = 0;
-                            _bGoBack = false;
-                        }
-                    }
+                    bot.speed = 0;
+                    _anim.SetFloat("velocity", 0f);
+                    //print("speed 0");
                 }
+                else if (Vector3.Distance(transform.position, _otherPath.position) > 5f)
+                {
+                    bot.speed = _defaultSpeed;
+                    _anim.SetFloat("velocity", bot.velocity.magnitude * animspeed);
+                }
+
             }
         }
-        else if (_bIsTrigger && !PrepPhaseSystem.instance.bPPSOn)
+        else if (_bIsVip)
         {
-            /*if (Vector3.Distance(transform.position, _otherPath.position) < 0.2f)
+            if (_bIsTrigger && !PrepPhaseSystem.instance.bPPSOn)
             {
-                _bIsTrigger = false;
-                StartCoroutine(GoBackToPatrol());
-            }*/
+                /*if (Vector3.Distance(transform.position, _otherPath.position) < 0.2f)
+                {
+                    _bIsTrigger = false;
+                    StartCoroutine(GoBackToPatrol());
+                }*/
 
-            if(/*Vector3.Distance(transform.position, _otherPath.position) < 5f*/ bot.remainingDistance < 5f)
-            {
-                bot.speed = 0;
-                _anim.SetFloat("velocity", 0f);
-                //print("speed 0");
-            }
-            else if (Vector3.Distance(transform.position, _otherPath.position) > 5f)
-            {
-                bot.speed = _defaultSpeed;
-                _anim.SetFloat("velocity", bot.velocity.magnitude * animspeed);
-            }
+                if (/*Vector3.Distance(transform.position, _otherPath.position) < 5f*/ bot.remainingDistance < 0.2f)
+                {
+                    bot.speed = 0;
+                    _anim.SetFloat("velocity", 0f);
+                    //print("speed 0");
+                }
+                else if (Vector3.Distance(transform.position, _otherPath.position) > 0.2f)
+                {
+                    bot.speed = _defaultSpeed;
+                    _anim.SetFloat("velocity", bot.velocity.magnitude * animspeed);
+                }
 
+            }
         }
 
         #endregion

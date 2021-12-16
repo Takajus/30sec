@@ -2751,6 +2751,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 731320250364599956, guid: 42827ab7dfb2c2f49a5c5291c86c28c2, type: 3}
+      propertyPath: _lightning_1
+      value: 
+      objectReference: {fileID: 5698492487606051406, guid: 211819398eade254c95c49300f86762b, type: 3}
+    - target: {fileID: 731320250364599956, guid: 42827ab7dfb2c2f49a5c5291c86c28c2, type: 3}
+      propertyPath: _lightning_2
+      value: 
+      objectReference: {fileID: 690965604948256151, guid: 6e96820454865ea49b7fbbc2f7e225e9, type: 3}
     - target: {fileID: 731320250364599957, guid: 42827ab7dfb2c2f49a5c5291c86c28c2, type: 3}
       propertyPath: m_Name
       value: PrepPhaseEvent
@@ -2872,6 +2880,10 @@ PrefabInstance:
     - target: {fileID: 3380925833182558631, guid: 5cce04b41cbda83438447062e474d973, type: 3}
       propertyPath: m_Name
       value: Lamp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3380925833182558631, guid: 5cce04b41cbda83438447062e474d973, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cce04b41cbda83438447062e474d973, type: 3}

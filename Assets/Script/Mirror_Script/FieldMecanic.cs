@@ -6,6 +6,7 @@ public class FieldMecanic : MonoBehaviour
 {
     [Header("GD Var")]
     public float waitingTime;
+    public Transform otherPath;
 
     [Header("Dev Var")]
     public float _radiusDetection;
@@ -32,7 +33,14 @@ public class FieldMecanic : MonoBehaviour
             {
                 AiScript = _AIlistObject.GetComponent<EnemyAI>();
                 AiScript.fireCheck = true;
-                AiScript._otherPath = transform;
+                if (!AiScript._bIsVip)
+                {
+                    AiScript._otherPath = transform;
+                }
+                else if (AiScript._bIsVip)
+                {
+                    AiScript._otherPath = otherPath;
+                }
                 AiScript.bot.ResetPath();
                 AiScript.ChangePath(waitingTime);
             }
