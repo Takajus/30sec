@@ -289,6 +289,7 @@ MonoBehaviour:
   _triggerArea: []
   _bIsTrigger: 0
   _waitingTime: 5
+  _waitingTimeEndPatrol: 0
   _radius: 0
   fireCheck: 0
   fireDistance: 0
@@ -2952,12 +2953,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7258599019940607781, guid: 0cd3d0666775a504489ee21b86637c69, type: 3}
       propertyPath: loop
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7258599019940607781, guid: 0cd3d0666775a504489ee21b86637c69, type: 3}
       propertyPath: _otherPath
       value: 
       objectReference: {fileID: 1150957637}
+    - target: {fileID: 7258599019940607781, guid: 0cd3d0666775a504489ee21b86637c69, type: 3}
+      propertyPath: _waitingTimeEndPatrol
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7258599019940607783, guid: 0cd3d0666775a504489ee21b86637c69, type: 3}
       propertyPath: m_RootOrder
       value: 1

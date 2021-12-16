@@ -25,6 +25,7 @@ public class EnemyAI : MonoBehaviour
     private bool _bGoBack;
     public bool _bIsTrigger;
     [SerializeField] private float _waitingTime;
+    [SerializeField] private float _waitingTimeEndPatrol;
     [SerializeField] private float _radius;
     private bool _oneTime;
     public bool fireCheck;
@@ -54,8 +55,8 @@ public class EnemyAI : MonoBehaviour
         }
 
         _defaultSpeed = bot.speed;
-        //nextDestination();
-        StartCoroutine(GoBackToPatrol());
+        nextDestination();
+        //StartCoroutine(GoBackToPatrol());
 
         timer = timeStart;
         _oneTime = true;
@@ -148,7 +149,7 @@ public class EnemyAI : MonoBehaviour
                 else if (_nextPoint >= monPath.transform.childCount)
                 {
                     _nextPoint = 0;
-                    StartCoroutine(GoBackToPatrol());
+                    StartCoroutine(GoBackToPatrol(_waitingTimeEndPatrol));
                     //nextDestination();
                 }
             }
@@ -156,30 +157,48 @@ public class EnemyAI : MonoBehaviour
             {
                 if (!_bGoBack)
                 {
-                    _nextPoint++;
-                    if (_nextPoint < monPath.transform.childCount)
+                    //_nextPoint++;
+                    if(_nextPoint == 0)
                     {
-                        nextDestination();
+                        _nextPoint++;
+                        StartCoroutine(GoBackToPatrol(_waitingTimeEndPatrol));
                     }
-                    else if (_nextPoint >= monPath.transform.childCount)
+                    else if (_nextPoint != 0)
                     {
-                        _nextPoint = monPath.transform.childCount - 1;
-                        _bGoBack = true;
+                        _nextPoint++;
+                        if (_nextPoint < monPath.transform.childCount)
+                        {
+                            //_nextPoint++;
+                            nextDestination();
+                        }
+                        else if (_nextPoint >= monPath.transform.childCount)
+                        {
+                            _nextPoint = monPath.transform.childCount - 1;
+                            _bGoBack = true;
+                        }
                     }
                 }
                 else if (_bGoBack)
                 {
-                    _nextPoint--;
-                    if (_nextPoint > 0)
+                    if (_nextPoint == monPath.transform.childCount - 1)
                     {
-                        nextDestination();
+                        _nextPoint--;
+                        StartCoroutine(GoBackToPatrol(_waitingTimeEndPatrol));
                     }
-                    else if (_nextPoint <= 0)
+                    else if (_nextPoint != monPath.transform.childCount - 1)
                     {
-                        //nextDestination();
-                        StartCoroutine(GoBackToPatrol());
-                        _nextPoint = 0;
-                        _bGoBack = false;
+                        _nextPoint--;
+                        if (_nextPoint > 0)
+                        {
+                            nextDestination();
+                        }
+                        else if (_nextPoint <= 0)
+                        {
+                            nextDestination();
+                            //StartCoroutine(GoBackToPatrol());
+                            _nextPoint = 0;
+                            _bGoBack = false;
+                        }
                     }
                 }
             }
@@ -271,9 +290,9 @@ public class EnemyAI : MonoBehaviour
         _waitingTime = waitTime;
     }
 
-    private IEnumerator GoBackToPatrol()
+    private IEnumerator GoBackToPatrol(float waitingTime = 5)
     {
-        yield return new WaitForSeconds(_waitingTime);
+        yield return new WaitForSeconds(waitingTime);
         nextDestination();
     }
 
@@ -317,19 +336,19 @@ public class EnemyAI : MonoBehaviour
                 else
                 {
                     _bIsTrigger = false;
-                    StartCoroutine(GoBackToPatrol());
+                    StartCoroutine(GoBackToPatrol(_waitingTime));
                 }
             }
             else
             {
                 _bIsTrigger = false;
-                StartCoroutine(GoBackToPatrol());
+                StartCoroutine(GoBackToPatrol(_waitingTime));
             }
         }
         else if (_bIsTrigger)
         {
             _bIsTrigger = false;
-            StartCoroutine(GoBackToPatrol());
+            StartCoroutine(GoBackToPatrol(_waitingTime));
         }
     }
 
