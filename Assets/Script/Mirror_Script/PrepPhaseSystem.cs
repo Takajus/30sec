@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 using UnityEngine.VFX;
 
 public class PrepPhaseSystem : MonoBehaviour
@@ -136,5 +136,10 @@ public class PrepPhaseSystem : MonoBehaviour
         {
             Instantiate(_wind, _gameObjectTmp[i].transform.position, Quaternion.identity);
         }
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
